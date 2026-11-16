@@ -11,7 +11,12 @@ npm run images     # regenera og.png e iconos (Chrome headless)
 npm run indexnow   # tras publicar: avisa a Bing/Copilot de todas las URLs
 ```
 
-Para publicar, sube el contenido de `dist/` a la raíz del hosting (Hostinger, Netlify, Cloudflare Pages…). Incluye `.htaccess` (Apache/Hostinger) y `_headers` (Netlify/Cloudflare).
+## Publicación (gratis)
+
+- **Hosting:** GitHub Pages, gratis y con HTTPS. Cada `git push` a `main` ejecuta `.github/workflows/deploy.yml`, que genera la web, pasa `scripts/check.mjs` (si hay errores SEO no publica) y la sube.
+- **Dominio:** `solucioneselectricasrodriguez.es` (Hostinger). DNS en Hostinger: `@` → A/AAAA de GitHub Pages (185.199.108-111.153); `www` → CNAME `albermoon.github.io`. La versión canónica es `https://www.solucioneselectricasrodriguez.es`.
+- **Cambiar algo:** edita `site.config.mjs` o `src/data/*.mjs` (también desde la web de GitHub) → commit → publicado en ~1 minuto.
+- Si algún día se pasa a hosting de Hostinger, sube `dist/`: ya incluye `.htaccess`.
 
 ## Contacto: todo va a WhatsApp
 

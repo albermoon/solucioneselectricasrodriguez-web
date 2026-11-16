@@ -1,8 +1,8 @@
-// Fotos: Unsplash (licencia Unsplash, sin atribución obligatoria) y Wikimedia Commons (con `credito`,
+// Fotos: Unsplash y Pexels (licencias sin atribución obligatoria) y Wikimedia Commons (con `credito`,
 // que se muestra en /aviso-legal/ como exige su licencia). Las de Commons se han recortado y redimensionado.
 // Sustitúyelas por fotos reales de obras propias cuando las haya: public/img/<clave>-800.webp y -1600.webp.
 export const FOTOS = {
-  hero: { alt: "Electricista con chaleco reflectante junto a un cuadro eléctrico de vivienda", w: 1240, h: 1333, sw: 800 },
+  hero: { alt: "Electricista midiendo con el polímetro en un cuadro eléctrico abierto", w: 1400, h: 1505, sw: 800 },
   acometida: { alt: "Zanja con tubos rojos para una canalización eléctrica subterránea", w: 1200, h: 900, sw: 800, credito: {"autor": "Chixoy", "licencia": "CC BY-SA 3.0", "licenciaUrl": "https://creativecommons.org/licenses/by-sa/3.0/deed.es", "fuente": "https://commons.wikimedia.org/wiki/File:Canalització.JPG"} },
   lineas: { alt: "Apoyo metálico de una línea aérea de media tensión con seccionadores, en Alginet (Ribera Alta)", w: 1600, h: 1200, sw: 800, credito: {"autor": "Vicenç Salvador Torres Guerola", "licencia": "CC BY-SA 3.0", "licenciaUrl": "https://creativecommons.org/licenses/by-sa/3.0/deed.es", "fuente": "https://commons.wikimedia.org/wiki/File:Línia_elèctrica_aèria_(Alginet,_Ribera_Alta,_País_Valencià).jpg"} },
   boletin: { alt: "Interruptores automáticos y diferenciales en un cuadro eléctrico de vivienda", w: 1600, h: 1200, sw: 800 },

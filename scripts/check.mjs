@@ -25,7 +25,7 @@ for (const file of files) {
     for (const [k, v] of [['title', title], ['desc', desc]]) { if (seen[k].has(v)) err(rel, `${k} duplicado con ${seen[k].get(v)}`); seen[k].set(v, rel); }
   }
   for (const m of h.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) { try { JSON.parse(m[1]); } catch (e) { err(rel, 'JSON-LD inválido: ' + e.message); } }
-  for (const m of h.matchAll(/href="(\/[^"#]*)/g)) {
+  for (const m of h.matchAll(/(?:href|src)="(\/[^"#]*)/g)) {
     const t = m[1]; const f = path.join(root, t.endsWith('/') ? t + 'index.html' : t);
     if (!fs.existsSync(f)) err(rel, `enlace roto ${t}`);
   }

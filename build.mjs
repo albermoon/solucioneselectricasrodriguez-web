@@ -5,7 +5,8 @@ import cfg from './site.config.mjs';
 import { SERVICIOS } from './src/data/servicios.mjs';
 import { GUIAS, GLOSARIO } from './src/data/guias.mjs';
 import { NORMATIVA } from './src/data/normativa.mjs';
-import { T, abs, ID, icon, waIcon, waLink, telLink, BUILD_DATE, fecha, stripTags, esc } from './src/lib.mjs';
+import { T, abs, ID, icon, waIcon, waLink, telLink, BUILD_DATE, fecha, stripTags, esc, img } from './src/lib.mjs';
+import { FOTO_SERVICIO } from './src/data/fotos.mjs';
 import { page, faqHtml, ctaBox, formHtml, crumbsHtml, fuentesHtml, faqNode, howToNode, areaServed } from './src/layout.mjs';
 
 const DIST = path.resolve('dist');
@@ -16,9 +17,9 @@ const emit = (p, html, meta = {}) => { write(p === '/' ? 'index.html' : p.replac
 
 const svc = (slug) => SERVICIOS.find((s) => s.slug === slug);
 const guia = (slug) => GUIAS.find((g) => g.slug === slug);
-const svcCards = (list = SERVICIOS, zona) => `<div class="grid">${list.map((s) => `<a class="card" href="/servicios/${s.slug}/">${icon(s.icono)}<h3>${s.nombre}${zona ? ` en ${zona}` : ''}</h3><p>${T(s.resumen)}</p><span class="more">Ver servicio →</span></a>`).join('')}</div>`;
+const svcCards = (list = SERVICIOS, zona, destacar = false) => `<div class="grid grid-svc${destacar ? ' feat' : ''}">${list.map((s) => `<a class="card card-img" href="/servicios/${s.slug}/"><div class="ph">${img(FOTO_SERVICIO[s.slug], { sizes: '(max-width: 600px) 100vw, 380px', alt: '' })}${icon(s.icono)}</div><div class="bd"><h3>${s.nombre}${zona ? ` en ${zona}` : ''}</h3><p>${T(s.resumen)}</p><span class="more">Ver servicio ${icon('flecha')}</span></div></a>`).join('')}</div>`;
 const zonasList = (excl) => `<ul class="zonas">${cfg.zonas.filter((z) => z.slug !== excl).map((z) => `<li><a href="/electricista/${z.slug}/">${icon('pin')}${z.nombre}</a></li>`).join('')}</ul>`;
-const hero = (crumbs, h1, lead, extra = '') => `<section class="hero hero-sm"><div class="wrap">${crumbsHtml(crumbs)}<h1>${h1}</h1>${lead ? `<p class="lead">${lead}</p>` : ''}${extra}</div></section>`;
+const hero = (crumbs, h1, lead, extra = '', foto) => `<section class="hero hero-sm${foto ? ' has-ph' : ''}">${foto ? img(foto, { cls: 'hero-bg', sizes: '100vw', alt: '', eager: true }) : ''}<div class="wrap">${crumbsHtml(crumbs)}<h1>${h1}</h1>${lead ? `<p class="lead">${lead}</p>` : ''}${extra}</div></section>`;
 const heroCtas = (wa) => `<div class="ctas"><a class="btn btn-wa" href="${waLink(wa)}" rel="nofollow noopener" target="_blank" data-ev="wa">${waIcon()} Presupuesto por WhatsApp</a><a class="btn btn-line" href="${telLink()}" data-ev="tel">${icon('tel')} ${cfg.telefonoVisible}</a></div>`;
 const SELLOS = ['Empresa instaladora habilitada', `Tramitación con ${cfg.distribuidora}`, 'Presupuesto sin compromiso', `${cfg.ciudad} y área metropolitana`];
 const resenas = () => cfg.resenasGoogle && cfg.perfiles.googleBusiness ? `<a class="stars" href="${cfg.perfiles.googleBusiness}" rel="noopener" target="_blank"><span aria-hidden="true">★★★★★</span> ${cfg.resenasGoogle.nota} en Google · ${cfg.resenasGoogle.total} reseñas</a>` : '';
@@ -37,19 +38,34 @@ emit('/', page({
   title: `Electricista en ${cfg.ciudad}: acometidas y boletines | ${cfg.nombreCorto}`,
   description: `Electricista en ${cfg.ciudad} y alrededores: acometidas, aprobación y legalización de líneas, boletines (CIE) y aumentos de potencia. Presupuesto por WhatsApp.`,
   schema: [faqNode('/', FAQ_HOME)],
+  lcp: 'hero', lcpSizes: '(max-width: 960px) 100vw, 540px',
   body: `
-<section class="hero"><div class="wrap">
-  <p class="eyebrow" style="color:var(--volt)">${cfg.descriptor} · ${cfg.ciudadVal}</p>
-  <h1>Electricista en ${cfg.ciudad}: <em>acometidas, aprobación de líneas</em> y boletines eléctricos</h1>
-  <p class="lead">Somos <strong>${cfg.nombre}</strong>, empresa instaladora eléctrica de ${cfg.ciudad}. Nos encargamos de todo lo que hay entre la red de la distribuidora y tu cuadro: acometidas nuevas, líneas aprobadas por ${cfg.distribuidora}, boletines, aumentos de potencia e instalaciones completas.</p>
-  ${heroCtas()}
-  ${chips()}
+<section class="hero hero-home"><div class="wrap hero-grid">
+  <div>
+    <p class="eyebrow">${cfg.descriptor} · ${cfg.ciudadVal}</p>
+    <h1>Electricista en ${cfg.ciudad}: <em>acometidas, aprobación de líneas</em> y boletines eléctricos</h1>
+    <p class="lead">Somos <strong>${cfg.nombre}</strong>, empresa instaladora eléctrica de ${cfg.ciudad}. Nos encargamos de todo lo que hay entre la red de la distribuidora y tu cuadro: acometidas nuevas, líneas aprobadas por ${cfg.distribuidora}, boletines, aumentos de potencia e instalaciones completas.</p>
+    ${heroCtas()}
+  </div>
+  <div class="hero-media">
+    ${img('hero', { sizes: '(max-width: 960px) 100vw, 540px', eager: true })}
+    ${cfg.resenasGoogle && cfg.perfiles.googleBusiness ? `<a class="badge b1" href="${cfg.perfiles.googleBusiness}" rel="noopener" target="_blank">${icon('estrella')}<span><strong>${cfg.resenasGoogle.nota} en Google</strong><span class="st" aria-hidden="true">★★★★★</span> ${cfg.resenasGoogle.total} reseñas</span></a>` : ''}
+    <div class="badge b2">${icon('linea')}<span><strong>Tramitamos con</strong>${cfg.distribuidora}</span></div>
+  </div>
 </div></section>
 
-<section class="sec"><div class="wrap layout">
+<section class="trust" aria-label="Por qué elegirnos"><div class="wrap"><ul>
+  <li>${icon('escudo')}<span><strong>Empresa instaladora habilitada</strong>Trabajos según el REBT y las normas de ${cfg.distribuidora.split(' ')[0]}</span></li>
+  <li>${icon('documento')}<span><strong>Boletín (CIE) oficial</strong>Lo emitimos y lo registramos en Industria</span></li>
+  <li>${icon('linea')}<span><strong>Expedientes con la distribuidora</strong>Acometidas, potencia y aprobación de líneas</span></li>
+  <li>${icon('reloj')}<span><strong>Presupuesto sin compromiso</strong>Por WhatsApp, con fotos y desglosado</span></li>
+</ul></div></section>
+
+<section class="sec"><div class="wrap split">
   <div class="prose">
-    <div class="answer"><p><strong>En resumen:</strong> ${cfg.nombre} es una empresa instaladora eléctrica con sede en ${cfg.ciudad} especializada en <a href="/servicios/acometidas-electricas/">acometidas eléctricas</a>, <a href="/servicios/aprobacion-legalizacion-lineas/">aprobación y legalización de líneas</a>, <a href="/servicios/boletin-electrico/">boletines eléctricos (CIE)</a> y <a href="/servicios/aumento-de-potencia/">aumentos de potencia</a>. Trabaja en ${cfg.ciudad} y su área metropolitana (${cfg.zonas.slice(1, 7).map((z) => z.nombre).join(', ')}…) y gestiona los trámites con ${cfg.distribuidora} e Industria. Presupuestos por WhatsApp en el ${cfg.telefonoVisible}.</p></div>
+    <span class="eyebrow">Quiénes somos</span>
     <h2>Especialistas en lo que otros electricistas no quieren tramitar</h2>
+    <div class="answer"><p><strong>En resumen:</strong> ${cfg.nombre} es una empresa instaladora eléctrica con sede en ${cfg.ciudad} especializada en <a href="/servicios/acometidas-electricas/">acometidas eléctricas</a>, <a href="/servicios/aprobacion-legalizacion-lineas/">aprobación y legalización de líneas</a>, <a href="/servicios/boletin-electrico/">boletines eléctricos (CIE)</a> y <a href="/servicios/aumento-de-potencia/">aumentos de potencia</a>. Trabaja en ${cfg.ciudad} y su área metropolitana (${cfg.zonas.slice(1, 7).map((z) => z.nombre).join(', ')}…) y gestiona los trámites con ${cfg.distribuidora} e Industria. Presupuestos por WhatsApp en el ${cfg.telefonoVisible}.</p></div>
     <p>Cambiar un enchufe lo hace cualquiera. Conseguir que la distribuidora apruebe una línea, dar luz a una parcela en la huerta, renovar la LGA de una comunidad o sacar un boletín para un piso que lleva años de baja requiere conocer el reglamento, las normas particulares de la distribuidora y cómo se mueve cada expediente. Eso es lo que hacemos todos los días.</p>
     <ul class="ticks">
       <li>${icon('check')}<span><strong>Un solo interlocutor</strong>: obra, documentación y trámites con la distribuidora, el ayuntamiento e Industria.</span></li>
@@ -58,17 +74,20 @@ emit('/', page({
       <li>${icon('check')}<span><strong>Atención directa por WhatsApp</strong>: mándanos fotos y te orientamos el mismo día.</span></li>
     </ul>
   </div>
-  <aside class="aside">${ctaBox()}</aside>
+  <figure class="photo">
+    ${img('averias', { sizes: '(max-width: 960px) 100vw, 480px' })}
+    <figcaption class="tag"><span><b>${SERVICIOS.length}</b><span>servicios eléctricos</span></span><span><b>${cfg.zonas.length}</b><span>municipios atendidos</span></span><span><b>${cfg.resenasGoogle ? cfg.resenasGoogle.nota : cfg.radioServicioKm + ' km'}</b><span>${cfg.resenasGoogle ? 'valoración en Google' : 'de radio'}</span></span></figcaption>
+  </figure>
 </div></section>
 
 <section class="sec soft" id="servicios"><div class="wrap">
   <div class="sec-h"><span class="eyebrow">Servicios</span><h2>Servicios eléctricos en ${cfg.ciudad}</h2><p>Del punto de conexión a tu cuadro: todo lo necesario para tener suministro legal, seguro y con la potencia que necesitas.</p></div>
-  ${svcCards()}
+  ${svcCards(SERVICIOS, undefined, true)}
 </div></section>
 
 <section class="sec"><div class="wrap">
-  <div class="sec-h"><span class="eyebrow">Cómo trabajamos</span><h2>De la primera foto al enganche, en 5 pasos</h2></div>
-  <ol class="steps">
+  <div class="sec-h c"><span class="eyebrow">Cómo trabajamos</span><h2>De la primera foto al enganche, en 5 pasos</h2></div>
+  <ol class="steps row">
     <li><strong>Nos escribes por WhatsApp</strong>Dirección, qué necesitas y fotos del cuadro, la fachada o la parcela.</li>
     <li><strong>Diagnóstico y presupuesto</strong>Te decimos qué trámites hacen falta y te damos precio desglosado.</li>
     <li><strong>Tramitación</strong>Presentamos solicitudes a ${cfg.distribuidora}, ayuntamiento e Industria.</li>
@@ -77,16 +96,19 @@ emit('/', page({
   </ol>
 </div></section>
 
-<section class="sec soft" id="zonas"><div class="wrap">
+<section class="band" id="zonas">${img('valencia', { sizes: '100vw', alt: '' })}<div class="wrap">
   <div class="sec-h"><span class="eyebrow">Zonas</span><h2>Electricista en ${cfg.ciudad} y alrededores</h2><p>Trabajamos en ${cfg.ciudad} capital y en los municipios de l’Horta, el Camp de Túria y el Camp de Morvedre, en un radio aproximado de ${cfg.radioServicioKm} km.</p></div>
   ${zonasList()}
 </div></section>
 
 <section class="sec"><div class="wrap">
   <div class="sec-h"><span class="eyebrow">Guías</span><h2>Resolvemos tus dudas antes de llamar</h2></div>
-  <div class="grid">${GUIAS.map((g) => `<a class="card" href="/guias/${g.slug}/">${icon('libro')}<h3>${g.h1}</h3><p>${T(g.description)}</p><span class="more">Leer guía →</span></a>`).join('')}</div>
+  <div class="grid grid-3">${GUIAS.map((g) => `<a class="card" href="/guias/${g.slug}/">${icon('libro')}<h3>${g.h1}</h3><p>${T(g.description)}</p><span class="more">Leer guía ${icon('flecha')}</span></a>`).join('')}</div>
 </div></section>
-
+${cfg.resenasGoogle && cfg.perfiles.googleBusiness ? `
+<section class="sec warm"><div class="wrap">
+  <div class="rating"><div><div class="n">${cfg.resenasGoogle.nota}</div></div><div><div class="st" aria-hidden="true">★★★★★</div><div class="g">${cfg.resenasGoogle.total} reseñas en Google</div></div><p>Nuestros clientes nos valoran con un <strong>${cfg.resenasGoogle.nota} sobre 5</strong> en Google. Lee sus opiniones o, si ya has trabajado con nosotros, cuéntanos qué tal: nos ayuda mucho.</p><a class="btn btn-ink" href="${cfg.perfiles.googleBusiness}" rel="noopener" target="_blank">Ver reseñas en Google ${icon('flecha')}</a></div>
+</div></section>` : ''}
 <section class="sec soft"><div class="wrap layout">
   <div class="prose">${faqHtml(FAQ_HOME)}</div>
   <aside class="aside"><div class="box"><h2>Pide presupuesto</h2>${formHtml()}</div></aside>
@@ -99,7 +121,7 @@ emit('/servicios/', page({
   title: `Servicios de electricista en ${cfg.ciudad}`,
   description: `Acometidas, aprobación de líneas, boletines, aumentos de potencia, LGA, instalaciones, cuadros, recarga y averías en ${cfg.ciudad} y alrededores.`,
   schema: [{ '@type': 'ItemList', '@id': abs('/servicios/#lista'), itemListElement: SERVICIOS.map((s, i) => ({ '@type': 'ListItem', position: i + 1, url: abs(`/servicios/${s.slug}/`), name: s.nombre })) }],
-  body: `${hero([['Servicios', '/servicios/']], `Servicios eléctricos en ${cfg.ciudad}`, `Especialistas en conexión a red y legalización: acometidas, líneas, boletines y potencia, además de instalaciones completas.`, heroCtas())}
+  body: `${hero([['Servicios', '/servicios/']], `Servicios eléctricos en ${cfg.ciudad}`, `Especialistas en conexión a red y legalización: acometidas, líneas, boletines y potencia, además de instalaciones completas.`, heroCtas(), 'cuadro')}
 <section class="sec"><div class="wrap">${svcCards()}</div></section>`,
 }), { title: 'Servicios' });
 
@@ -118,7 +140,7 @@ for (const s of SERVICIOS) {
   emit(p, page({
     path: p, crumbs, title: T(s.title), description: s.description, waText: wa,
     schema: [serviceNode, howToNode(p, `Proceso: ${s.nombre}`, s.pasos), faqNode(p, s.faqs)],
-    body: `${hero(crumbs, T(s.h1), '', heroCtas(wa))}
+    body: `${hero(crumbs, T(s.h1), T(s.resumen), heroCtas(wa), FOTO_SERVICIO[s.slug])}
 <section class="sec"><div class="wrap layout">
   <article class="prose">
     <p class="meta">Actualizado el <time datetime="${BUILD_DATE}">${fecha(BUILD_DATE)}</time> · Por el equipo técnico de ${cfg.nombre}</p>
@@ -147,10 +169,11 @@ emit('/electricista/', page({
   path: '/electricista/', pageType: 'CollectionPage', crumbs: [['Zonas', '/electricista/']],
   title: `Electricista en ${cfg.ciudad} y área metropolitana`,
   description: `Electricista en ${cfg.zonas.slice(0, 5).map((z) => z.nombre).join(', ')} y toda el área metropolitana: acometidas, aprobación de líneas y boletines eléctricos.`,
-  body: `${hero([['Zonas', '/electricista/']], `Electricista en ${cfg.ciudad} y alrededores`, `Damos servicio en ${cfg.ciudad} capital y en su área metropolitana, en un radio de unos ${cfg.radioServicioKm} km.`, heroCtas())}
+  body: `${hero([['Zonas', '/electricista/']], `Electricista en ${cfg.ciudad} y alrededores`, `Damos servicio en ${cfg.ciudad} capital y en su área metropolitana, en un radio de unos ${cfg.radioServicioKm} km.`, heroCtas(), 'valencia')}
 <section class="sec"><div class="wrap"><div class="grid">${cfg.zonas.map((z) => `<a class="card" href="/electricista/${z.slug}/">${icon('pin')}<h3>Electricista en ${z.nombre}</h3><p>${z.tipico.slice(0, 2).join(' · ')}</p><span class="more">Ver zona →</span></a>`).join('')}</div></div></section>`,
 }), { title: 'Zonas' });
 
+const FOTOS_ZONA = ['obra', 'lineas', 'alta', 'acometida', 'contadores', 'hero', 'cuadro'];
 for (const z of cfg.zonas) {
   const p = `/electricista/${z.slug}/`;
   const crumbs = [['Zonas', '/electricista/'], [z.nombre, p]];
@@ -168,7 +191,7 @@ for (const z of cfg.zonas) {
     title: `Electricista en ${z.nombre}: acometidas y boletines`,
     description: `Electricista en ${nombreDoble}: acometidas, aprobación de líneas, boletines (CIE) y aumentos de potencia. Presupuesto por WhatsApp al ${cfg.telefonoVisible}.`,
     schema: [faqNode(p, faqs), { '@type': 'Place', '@id': abs(p + '#zona'), name: nombreDoble, address: { '@type': 'PostalAddress', addressLocality: z.nombre, postalCode: z.cps.split(' ')[0], addressRegion: cfg.direccion.provincia, addressCountry: 'ES' } }],
-    body: `${hero(crumbs, `Electricista en ${nombreDoble}`, `Acometidas, aprobación de líneas, boletines y aumentos de potencia en ${z.nombre}${z.minutos ? `, a unos ${z.minutos} minutos de ${cfg.ciudad}` : ''}.`, heroCtas(wa))}
+    body: `${hero(crumbs, `Electricista en ${nombreDoble}`, `Acometidas, aprobación de líneas, boletines y aumentos de potencia en ${z.nombre}${z.minutos ? `, a unos ${z.minutos} minutos de ${cfg.ciudad}` : ''}.`, heroCtas(wa), z.slug === 'valencia' ? 'valencia' : FOTOS_ZONA[cfg.zonas.indexOf(z) % FOTOS_ZONA.length])}
 <section class="sec"><div class="wrap layout">
   <article class="prose">
     <div class="answer"><p><strong>${cfg.nombre}</strong> presta servicio de electricista en <strong>${nombreDoble}</strong> (${cfg.direccion.provincia}, CP ${z.cps}): acometidas eléctricas, aprobación y legalización de líneas con ${cfg.distribuidora}, boletines eléctricos (CIE), aumentos de potencia, renovación de LGA en comunidades e instalaciones completas. Presupuesto por WhatsApp en el ${cfg.telefonoVisible}.</p></div>
@@ -193,7 +216,7 @@ emit('/guias/', page({
   path: '/guias/', pageType: 'CollectionPage', crumbs: [['Guías', '/guias/']],
   title: 'Guías sobre acometidas, boletines y potencia',
   description: 'Guías claras sobre acometidas, boletín eléctrico (CIE), aumento de potencia y legalización de líneas, escritas por electricistas de Valencia.',
-  body: `${hero([['Guías', '/guias/']], 'Guías eléctricas', 'Lo que necesitas saber antes de pedir una acometida, un boletín o más potencia, explicado por profesionales.')}
+  body: `${hero([['Guías', '/guias/']], 'Guías eléctricas', 'Lo que necesitas saber antes de pedir una acometida, un boletín o más potencia, explicado por profesionales.', '', 'boletin')}
 <section class="sec"><div class="wrap"><div class="grid">${GUIAS.map((g) => `<a class="card" href="/guias/${g.slug}/">${icon('libro')}<h3>${g.h1}</h3><p>${T(g.description)}</p><span class="more">Leer →</span></a>`).join('')}<a class="card" href="/glosario-electrico/">${icon('libro')}<h3>Glosario eléctrico</h3><p>Acometida, CGP, LGA, CIE, CUPS… definidos en una frase.</p><span class="more">Ver glosario →</span></a></div></div></section>`,
 }), { title: 'Guías' });
 
@@ -210,7 +233,7 @@ for (const g of GUIAS) {
   emit(p, page({
     path: p, crumbs, title: T(g.title), description: g.description, ogType: 'article', published: g.publicado, modified: g.actualizado,
     schema: [article, faqNode(p, g.faqs)],
-    body: `${hero(crumbs, g.h1, '')}
+    body: `${hero(crumbs, g.h1, '', '', FOTO_SERVICIO[g.servicio] || 'boletin')}
 <section class="sec"><div class="wrap layout">
   <article class="prose">
     <p class="meta">Publicado el <time datetime="${g.publicado}">${fecha(g.publicado)}</time> · Actualizado el <time datetime="${g.actualizado}">${fecha(g.actualizado)}</time> · Por ${cfg.titular ? `${cfg.titular.nombre}, ${cfg.titular.cargo}` : `el equipo técnico de ${cfg.nombre}`}</p>
@@ -232,7 +255,7 @@ emit('/glosario-electrico/', page({
   title: 'Glosario eléctrico: acometida, CGP, LGA, CIE y CUPS',
   description: 'Definiciones claras de los términos de los trámites eléctricos: acometida, CGP, LGA, derivación individual, CIE, CUPS y extensión de red.',
   schema: [{ '@type': 'DefinedTermSet', '@id': abs('/glosario-electrico/#glosario'), name: 'Glosario eléctrico', hasDefinedTerm: GLOSARIO.map(([t, d]) => ({ '@type': 'DefinedTerm', name: t, description: d, inDefinedTermSet: abs('/glosario-electrico/#glosario') })) }],
-  body: `${hero([['Guías', '/guias/'], ['Glosario eléctrico', '/glosario-electrico/']], 'Glosario eléctrico', 'Los términos que te encontrarás al tramitar una acometida, un boletín o un aumento de potencia.')}
+  body: `${hero([['Guías', '/guias/'], ['Glosario eléctrico', '/glosario-electrico/']], 'Glosario eléctrico', 'Los términos que te encontrarás al tramitar una acometida, un boletín o un aumento de potencia.', '', 'potencia')}
 <section class="sec"><div class="wrap prose"><dl>${GLOSARIO.map(([t, d]) => `<dt id="${t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}"><strong>${t}</strong></dt><dd><p>${d}</p></dd>`).join('')}</dl></div></section>`,
 }), { title: 'Glosario eléctrico', glosario: true });
 
@@ -243,7 +266,7 @@ emit('/preguntas-frecuentes/', page({
   title: `Preguntas frecuentes de electricidad en ${cfg.ciudad}`,
   description: `Respuestas a las dudas más habituales sobre acometidas, aprobación de líneas, boletín eléctrico, potencia, LGA y recarga en ${cfg.ciudad}.`,
   schema: [faqNode('/preguntas-frecuentes/', allFaqs)],
-  body: `${hero([['Preguntas frecuentes', '/preguntas-frecuentes/']], 'Preguntas frecuentes', 'Respuestas directas a lo que más nos preguntan.')}
+  body: `${hero([['Preguntas frecuentes', '/preguntas-frecuentes/']], 'Preguntas frecuentes', 'Respuestas directas a lo que más nos preguntan.', '', 'boletin')}
 <section class="sec"><div class="wrap layout"><div class="prose">
 ${faqHtml(FAQ_HOME, 'Sobre nosotros y cómo trabajamos')}
 ${SERVICIOS.map((s) => faqHtml(s.faqs, `<a href="/servicios/${s.slug}/">${s.nombre}</a>`)).join('\n')}
@@ -262,7 +285,7 @@ emit('/sobre-nosotros/', page({
   path: '/sobre-nosotros/', pageType: 'AboutPage', crumbs: [['Sobre nosotros', '/sobre-nosotros/']],
   title: `Sobre nosotros: electricistas en ${cfg.ciudad}`,
   description: `Quiénes somos: empresa instaladora eléctrica en ${cfg.ciudad} especializada en acometidas, líneas y boletines. Habilitación, zona y forma de trabajo.`,
-  body: `${hero([['Sobre nosotros', '/sobre-nosotros/']], `Sobre ${cfg.nombre}`, `Electricistas de ${cfg.ciudad} especializados en conectar, legalizar y dar potencia.`)}
+  body: `${hero([['Sobre nosotros', '/sobre-nosotros/']], `Sobre ${cfg.nombre}`, `Electricistas de ${cfg.ciudad} especializados en conectar, legalizar y dar potencia.`, '', 'obra')}
 <section class="sec"><div class="wrap layout"><article class="prose">
   <div class="answer"><p>${cfg.nombre} es una empresa instaladora eléctrica de ${cfg.ciudad}${cfg.anioFundacion ? `, en activo desde ${cfg.anioFundacion},` : ''} centrada en la parte más técnica y burocrática del oficio: acometidas, aprobación y legalización de líneas ante ${cfg.distribuidora}, boletines eléctricos, aumentos de potencia e instalaciones de enlace en comunidades.</p></div>
   ${cfg.titular ? `<h2>${cfg.titular.nombre}</h2><p>${cfg.titular.cargo}${cfg.titular.anios ? ` con más de ${cfg.titular.anios} años de experiencia` : ''}.</p>` : ''}
@@ -279,7 +302,7 @@ emit('/contacto/', page({
   path: '/contacto/', pageType: 'ContactPage', crumbs: [['Contacto', '/contacto/']],
   title: `Contacto: presupuesto por WhatsApp en ${cfg.ciudad}`,
   description: `Pide presupuesto a ${cfg.nombre} por WhatsApp o teléfono: ${cfg.telefonoVisible}. Acometidas, líneas, boletines y potencia en ${cfg.ciudad} y alrededores.`,
-  body: `${hero([['Contacto', '/contacto/']], 'Pide presupuesto por WhatsApp', `Escríbenos al <a href="${waLink()}" style="color:var(--volt)" rel="nofollow noopener" target="_blank">${cfg.telefonoVisible}</a> o rellena el formulario: se abrirá WhatsApp con tu mensaje listo.`, heroCtas())}
+  body: `${hero([['Contacto', '/contacto/']], 'Pide presupuesto por WhatsApp', `Escríbenos al <a href="${waLink()}" style="color:var(--volt)" rel="nofollow noopener" target="_blank">${cfg.telefonoVisible}</a> o rellena el formulario: se abrirá WhatsApp con tu mensaje listo.`, heroCtas(), 'hero')}
 <section class="sec"><div class="wrap layout">
   <div class="box"><h2>Cuéntanos qué necesitas</h2>${formHtml()}</div>
   <aside class="aside">
@@ -396,10 +419,10 @@ Header set Content-Type "text/plain; charset=utf-8"
 </FilesMatch>
 </IfModule>
 `);
-write('_headers', `/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Strict-Transport-Security: max-age=31536000; includeSubDomains\n/*.png\n  Cache-Control: public, max-age=31536000, immutable\n/*.txt\n  Content-Type: text/plain; charset=utf-8\n`);
+write('_headers', `/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n  Strict-Transport-Security: max-age=31536000; includeSubDomains\n/*.png\n  Cache-Control: public, max-age=31536000, immutable\n/img/*\n  Cache-Control: public, max-age=2592000\n/fonts/*\n  Cache-Control: public, max-age=31536000, immutable\n/*.txt\n  Content-Type: text/plain; charset=utf-8\n`);
 
 // Estáticos
-for (const f of fs.readdirSync('public')) fs.copyFileSync(path.join('public', f), path.join(DIST, f));
+fs.cpSync('public', DIST, { recursive: true });
 
 // ═══ Avisos de datos pendientes ═════════════════════════════════════════════
 const faltan = [

@@ -22,6 +22,14 @@ npm run indexnow   # tras publicar: avisa a Bing/Copilot de todas las URLs
 
 Los botones, la barra fija del móvil, el botón flotante y el formulario abren WhatsApp con el **+34 647 41 95 23** y el mensaje ya escrito (nombre, municipio, servicio y texto). La web no guarda datos, así que no necesita banner de cookies.
 
+## Fotos
+
+Las fotos de `public/img/` son de Unsplash: su licencia permite el uso comercial y no exige atribución. Están ahí para que la web no parezca una plantilla. **Conviene sustituirlas por fotos reales de vuestras obras**, porque es lo que más confianza da (E-E-A-T) y Google lo valora.
+
+1. Haz la foto en horizontal y guárdala con el mismo nombre en dos tamaños: `public/img/<clave>-800.webp` y `<clave>-1600.webp`. Las claves están en `src/data/fotos.mjs`: `hero`, `acometida`, `lineas`, `boletin`…
+2. Actualiza el `alt`, el ancho y el alto en `src/data/fotos.mjs`.
+3. Ejecuta `npm run check` y haz push.
+
 ## Qué incluye la web (on-page)
 
 | Área | Qué se ha hecho |

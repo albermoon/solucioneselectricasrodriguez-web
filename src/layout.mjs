@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import cfg from '../site.config.mjs';
 import { SERVICIOS } from './data/servicios.mjs';
-import { esc, T, abs, ID, icon, waIcon, waLink, telLink, LOGO_SVG, BUILD_DATE, stripTags } from './lib.mjs';
+import { esc, T, abs, ID, icon, waIcon, waLink, telLink, LOGO_SVG, BUILD_DATE, stripTags, imgSrcset } from './lib.mjs';
 
 const CSS = fs.readFileSync(new URL('./styles.css', import.meta.url), 'utf8')
   .replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s*\n\s*/g, '').replace(/\s*([{};:,>])\s*/g, '$1');
@@ -96,7 +96,7 @@ export const crumbsHtml = (crumbs) => `<nav class="crumbs" aria-label="Migas de 
 export const fuentesHtml = (lista) => !lista?.length ? '' : `<h2>Normativa y fuentes oficiales</h2><ul class="fuentes">${lista.map((n) => `<li><a href="${n.url}" rel="noopener" target="_blank">${n.nombre}</a> — BOE</li>`).join('')}</ul>`;
 
 // ── Layout ──────────────────────────────────────────────────────────────────
-export function page({ path, title, description, body, schema = [], crumbs = [], pageType = 'WebPage', ogType = 'website', noindex = false, published, modified = BUILD_DATE, waText }) {
+export function page({ path, title, description, body, schema = [], crumbs = [], pageType = 'WebPage', ogType = 'website', noindex = false, published, modified = BUILD_DATE, waText, lcp, lcpSizes = '100vw', ctaBand = true }) {
   const url = abs(path);
   const fullTitle = title.includes(cfg.nombre) || title.includes(cfg.nombreCorto) ? title : (title.length + cfg.nombreCorto.length + 3 <= 66 ? `${title} | ${cfg.nombreCorto}` : title);
   const desc = T(description);
@@ -146,24 +146,28 @@ ${published ? `<meta property="article:published_time" content="${published}">\n
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="alternate" type="text/plain" title="Resumen para IA (llms.txt)" href="/llms.txt">
+<link rel="preload" href="/fonts/barlow-sc-800.woff2" as="font" type="font/woff2" crossorigin>
+${lcp ? `<link rel="preload" as="image" imagesrcset="${imgSrcset(lcp)}" imagesizes="${lcpSizes}" fetchpriority="high">\n` : ''}
 <style>${CSS}</style>
 <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c')}</script>
 ${cfg.analyticsGA4 ? `<script async src="https://www.googletagmanager.com/gtag/js?id=${cfg.analyticsGA4}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${cfg.analyticsGA4}');</script>` : ''}
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
+<div class="topbar"><div class="wrap"><span class="hz">${icon('reloj')} ${cfg.horario.map((h) => `${h.texto} ${h.abre}–${h.cierra}`).join(' · ')}</span><span class="zn">${icon('pin')} ${cfg.ciudad} y área metropolitana</span><a href="${telLink()}" data-ev="tel">${icon('tel')} ${cfg.telefonoVisible}</a></div></div>
 <header class="top"><div class="wrap">
-  <a class="brand" href="/" aria-label="${esc(cfg.nombre)} – inicio">${LOGO_SVG}<span>${cfg.nombre}<small>${cfg.descriptor}</small></span></a>
+  <a class="brand" href="/" aria-label="${esc(cfg.nombre)} – inicio">${LOGO_SVG}<span><b>${cfg.nombre}</b><small>${cfg.descriptor}</small></span></a>
   <nav class="nav" aria-label="Principal">${NAV.map(([n, p]) => `<a href="${p}"${current(p)}>${n}</a>`).join('')}<a class="btn btn-wa" href="${wa}" rel="nofollow noopener" target="_blank" data-ev="wa">${waIcon()} WhatsApp</a></nav>
   <details class="menu"><summary aria-label="Abrir menú">Menú</summary><nav class="nav" aria-label="Principal móvil">${NAV.map(([n, p]) => `<a href="${p}"${current(p)}>${n}</a>`).join('')}</nav></details>
 </div></header>
 <main id="main">
 ${body}
 </main>
+${ctaBand ? `<section class="ctaband" aria-labelledby="cta-h"><div class="wrap"><div class="txt"><h2 id="cta-h">¿Tienes una acometida, una línea o un boletín pendiente?</h2><p>Mándanos la dirección y unas fotos por WhatsApp: te decimos qué trámites necesitas y cuánto cuesta.</p></div><div class="bts"><a class="btn btn-ink" href="${wa}" rel="nofollow noopener" target="_blank" data-ev="wa">${waIcon()} Escribir por WhatsApp</a><a class="btn btn-line" href="${telLink()}" data-ev="tel">${icon('tel')} ${cfg.telefonoVisible}</a></div></div></section>` : ''}
 <footer class="foot"><div class="wrap">
   <div class="cols">
     <div>
-      <h2>${cfg.nombre}</h2>
+      <a class="brand" href="/" aria-label="${esc(cfg.nombre)} – inicio">${LOGO_SVG}<span><b>${cfg.nombre}</b><small>${cfg.descriptor}</small></span></a>
       <p>${cfg.eslogan}.</p>
       <p><a href="${telLink()}">${icon('tel')} ${cfg.telefonoVisible}</a><br><a href="${wa}" rel="nofollow noopener" target="_blank">${waIcon()} WhatsApp</a>${cfg.email ? `<br><a href="mailto:${cfg.email}">${cfg.email}</a>` : ''}</p>
       <p>${icon('pin')} ${cfg.direccion.calle ? cfg.direccion.calle + ', ' : ''}${cfg.direccion.cp} ${cfg.direccion.localidad} (${cfg.direccion.provincia})<br>${icon('reloj')} ${cfg.horario.map((h) => `${h.texto}: ${h.abre}–${h.cierra}`).join(' · ')}</p>${cfg.perfiles.googleBusiness ? `<p><a href="${cfg.perfiles.googleBusiness}" rel="noopener" target="_blank">★ ${cfg.resenasGoogle ? `${cfg.resenasGoogle.nota} · ` : ''}Ficha en Google Maps</a></p>` : ''}

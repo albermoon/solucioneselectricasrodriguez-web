@@ -45,8 +45,19 @@ const P = {
   reloj: '<path d="M12 7v5l3 2M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/>',
   escudo: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 12l2 2 4-4"/>',
   libro: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5zM4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/>',
+  estrella: '<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/>',
+  flecha: '<path d="M5 12h14M13 6l6 6-6 6"/>',
 };
 export const icon = (n, cls = 'ico') => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${P[n] || P.rayo}</svg>`;
 export const waIcon = (cls = 'ico') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>`;
 
 export const LOGO_SVG = `<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false"><rect width="48" height="48" rx="12" fill="#0d1b2e"/><path d="M27 6 13 27h10l-3 15 15-22H25z" fill="#ffc400"/></svg>`;
+
+// ── Fotos responsive (WebP 800 / 1600 px) ───────────────────────────────────
+import { FOTOS } from './data/fotos.mjs';
+export const imgSrcset = (k) => `/img/${k}-800.webp 800w, /img/${k}-1600.webp 1600w`;
+export const img = (k, { sizes = '(max-width: 820px) 100vw, 50vw', cls = '', alt, eager = false } = {}) => {
+  const f = FOTOS[k];
+  if (!f) throw new Error(`Foto desconocida: ${k}`);
+  return `<img${cls ? ` class="${cls}"` : ''} src="/img/${k}-800.webp" srcset="${imgSrcset(k)}" sizes="${sizes}" width="${f.w}" height="${f.h}" alt="${esc(alt ?? f.alt)}"${eager ? ' fetchpriority="high" decoding="async"' : ' loading="lazy" decoding="async"'}>`;
+};

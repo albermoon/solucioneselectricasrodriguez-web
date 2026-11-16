@@ -1,0 +1,140 @@
+// Guías informativas: capturan búsquedas "qué es / cuánto cuesta / cómo"
+// y son el contenido que más citan los motores generativos (AI Overviews,
+// ChatGPT, Perplexity, Copilot). Formato: respuesta corta + TL;DR + secciones.
+
+export const GUIAS = [
+  {
+    slug: 'que-es-una-acometida-electrica',
+    title: '¿Qué es una acometida eléctrica? Tipos y quién paga',
+    description: 'Qué es una acometida eléctrica, qué tipos hay (aérea, subterránea, mixta), dónde empieza y acaba, quién la paga y cómo se solicita en Valencia.',
+    h1: '¿Qué es una acometida eléctrica?',
+    publicado: '2026-11-16',
+    actualizado: '2026-11-16',
+    respuesta: 'Una acometida eléctrica es la parte de la red de distribución que conecta la red de baja tensión de la calle con la caja general de protección (CGP) de un edificio, vivienda o nave. Está regulada por la ITC-BT-11 del REBT, pertenece a la distribuidora y su solicitud y obra las paga el titular del nuevo suministro.',
+    tldr: ['Empieza en la red de la distribuidora y termina en la CGP.', 'Tipos: aérea (posada o tensada), subterránea y mixta.', 'La paga quien pide el suministro: derechos regulados + obra.', 'La conecta siempre la distribuidora ({distribuidora} en casi toda Valencia).'],
+    secciones: [
+      { h2: 'Dónde empieza y dónde acaba', html: '<p>La acometida empieza en el punto de conexión que indica la distribuidora en su red de baja tensión y termina en los bornes de entrada de la <strong>CGP</strong>. A partir de la CGP empieza la <strong>instalación de enlace</strong> del cliente: línea general de alimentación, contadores y derivaciones individuales.</p>' },
+      { h2: 'Tipos de acometida', html: '<ul><li><strong>Aérea posada sobre fachada</strong>: cable sujeto a la pared; típica de cascos antiguos.</li><li><strong>Aérea tensada</strong>: cable entre apoyos; parcelas y zonas rurales.</li><li><strong>Subterránea</strong>: bajo tubo enterrado; urbanizaciones y obra nueva.</li><li><strong>Mixta</strong>: combina tramo aéreo y subterráneo.</li></ul>' },
+      { h2: 'Cómo se solicita', html: '<ol><li>Se presenta una solicitud de acceso y conexión a la distribuidora con la potencia necesaria.</li><li>La distribuidora responde con las condiciones técnico-económicas.</li><li>Se aceptan y se pagan los derechos regulados.</li><li>Se ejecuta la obra que corresponde al cliente.</li><li>La distribuidora conecta y se da de alta el contrato.</li></ol>' },
+    ],
+    faqs: [
+      { q: '¿La acometida es mía o de la distribuidora?', a: 'Una vez conectada, la acometida forma parte de la red de distribución y su mantenimiento corresponde a la distribuidora.' },
+      { q: '¿La CGP forma parte de la acometida?', a: 'No. La CGP marca el final de la acometida y el principio de la instalación de enlace del cliente.' },
+    ],
+    servicio: 'acometidas-electricas',
+  },
+  {
+    slug: 'cuanto-cuesta-una-acometida-electrica',
+    title: '¿Cuánto cuesta una acometida eléctrica?',
+    description: 'De qué depende el precio de una acometida eléctrica: derechos de extensión, acceso, enganche y verificación, obra civil, CGP y extensión de red. Guía para Valencia.',
+    h1: '¿Cuánto cuesta una acometida eléctrica?',
+    publicado: '2026-11-16',
+    actualizado: '2026-11-16',
+    respuesta: 'El coste de una acometida eléctrica tiene tres partes: los derechos de acometida que cobra la distribuidora (importes regulados de extensión por kW, acceso por kW, enganche y verificación), la obra del cliente (zanja, tubos, arquetas, CGP y hornacina) y la documentación técnica. La partida que más varía es la obra: no cuesta lo mismo una acometida sobre fachada que una zanja de 40 metros bajo asfalto o una extensión de red.',
+    tldr: ['Derechos regulados: dependen de los kW que pidas.', 'Obra: depende de metros, pavimento y tipo de acometida.', 'Extensión de red: solo si la red no llega a tu parcela.', 'Pide siempre presupuesto desglosado por partidas.'],
+    secciones: [
+      { h2: 'Los derechos de acometida (regulados)', html: '<table><thead><tr><th>Concepto</th><th>Cómo se calcula</th></tr></thead><tbody><tr><td>Derechos de extensión</td><td>Por kW solicitado, cuando hay que extender o reforzar red dentro de los límites regulados</td></tr><tr><td>Derechos de acceso</td><td>Por kW solicitado</td></tr><tr><td>Derechos de enganche</td><td>Importe fijo por la conexión</td></tr><tr><td>Derechos de verificación</td><td>Importe fijo por comprobar la instalación</td></tr></tbody></table><p>Los importes los fija la normativa estatal y la distribuidora los incluye en sus condiciones técnico-económicas. Consulta siempre los vigentes con tu distribuidora o pídenos que te los calculemos.</p>' },
+      { h2: 'La obra que corresponde al cliente', html: '<ul><li>Metros de zanja y tipo de pavimento a reponer (tierra, acera, asfalto).</li><li>Tubos, arquetas y cableado según las normas de {distribuidora}.</li><li>CGP o CPM y su hornacina o armario.</li><li>Licencia municipal de obra en vía pública y tasas.</li></ul>' },
+      { h2: 'Cuándo se encarece: la extensión de red', html: '<p>Si la red de baja tensión no llega hasta tu parcela o no tiene capacidad, la distribuidora puede exigir una extensión o refuerzo. Las instalaciones que se construyen para ello se ceden después a la distribuidora. Es frecuente en la huerta valenciana y en parcelas aisladas.</p>' },
+    ],
+    faqs: [
+      { q: '¿Se puede dar un precio cerrado de acometida sin visita?', a: 'Una estimación sí, con fotos, dirección y potencia. El precio cerrado requiere conocer el punto de conexión que fija la distribuidora.' },
+    ],
+    servicio: 'acometidas-electricas',
+  },
+  {
+    slug: 'como-legalizar-una-linea-electrica',
+    title: 'Cómo legalizar una línea eléctrica: pasos',
+    description: 'Pasos para conseguir la aprobación de una línea eléctrica de baja o media tensión: acceso y conexión, proyecto, obra, inspección, cesión y legalización.',
+    h1: 'Cómo legalizar y conseguir la aprobación de una línea eléctrica',
+    publicado: '2026-11-16',
+    actualizado: '2026-11-16',
+    respuesta: 'Para legalizar una línea eléctrica hay que: (1) solicitar acceso y conexión a la distribuidora; (2) aceptar sus condiciones técnico-económicas; (3) redactar memoria o proyecto según la tensión y potencia; (4) obtener licencias municipales; (5) ejecutar la línea con una empresa instaladora habilitada siguiendo las normas de la distribuidora; (6) superar la inspección; (7) firmar la cesión si la línea pasa a la distribuidora y (8) registrarla ante Industria antes de la puesta en servicio.',
+    tldr: ['Baja tensión: REBT + normas de la distribuidora.', 'Media/alta tensión: RD 223/2008 y autorización administrativa.', 'Las extensiones de red se ceden a la distribuidora.', 'El expediente completo evita reinspecciones.'],
+    secciones: [
+      { h2: 'Documentación habitual', html: '<ul><li>Solicitud de acceso y conexión y planos de situación.</li><li>Condiciones técnico-económicas aceptadas.</li><li>Memoria técnica o proyecto firmado (media tensión: siempre proyecto).</li><li>Licencia municipal de obra.</li><li>Certificados de instalación y, en su caso, de dirección de obra.</li><li>Acta de cesión y documentación para la distribuidora.</li></ul>' },
+      { h2: 'Baja tensión vs. media tensión', html: '<table><thead><tr><th></th><th>Baja tensión</th><th>Media tensión</th></tr></thead><tbody><tr><td>Reglamento</td><td>REBT (RD 842/2002)</td><td>RLAT (RD 223/2008)</td></tr><tr><td>Documento técnico</td><td>Memoria o proyecto según potencia</td><td>Proyecto siempre</td></tr><tr><td>Autorización</td><td>Registro ante Industria</td><td>Autorización administrativa (RD 1955/2000)</td></tr><tr><td>Plazo típico</td><td>Semanas</td><td>Meses</td></tr></tbody></table>' },
+    ],
+    faqs: [
+      { q: '¿Quién puede ejecutar una línea eléctrica?', a: 'Una empresa instaladora habilitada en la categoría que corresponda: baja tensión para líneas de BT y líneas de alta tensión (LAT) para media y alta tensión.' },
+    ],
+    servicio: 'aprobacion-legalizacion-lineas',
+  },
+  {
+    slug: 'boletin-electrico-que-es-y-cuando-se-necesita',
+    title: 'Boletín eléctrico: qué es y cuándo se necesita',
+    description: 'Qué es el boletín eléctrico o Certificado de Instalación Eléctrica (CIE), cuándo lo pide la distribuidora, quién lo emite y cuánto tarda en Valencia.',
+    h1: 'Boletín eléctrico: qué es y cuándo lo necesitas',
+    publicado: '2026-11-16',
+    actualizado: '2026-11-16',
+    respuesta: 'El boletín eléctrico, oficialmente Certificado de Instalación Eléctrica (CIE), es el documento firmado por una empresa instaladora habilitada que acredita que una instalación de baja tensión cumple el REBT e indica su potencia máxima admisible. Se necesita para dar de alta la luz, reconectar un suministro antiguo, subir la potencia por encima de la certificada y para licencias de actividad.',
+    tldr: ['Nombre oficial: Certificado de Instalación Eléctrica (CIE).', 'Lo emite una empresa instaladora habilitada.', 'Necesario para altas, reenganches y aumentos de potencia.', 'Si la instalación no cumple, hay que adecuarla antes.'],
+    secciones: [
+      { h2: 'Qué datos incluye', html: '<ul><li>Titular y dirección del suministro.</li><li>Potencia máxima admisible.</li><li>Características de la derivación individual y protecciones.</li><li>Resultados de las mediciones (tierra, aislamiento).</li><li>Datos de la empresa instaladora habilitada.</li></ul>' },
+      { h2: 'Cuánto tarda', html: '<p>Si la instalación cumple, el CIE se emite tras la revisión y se registra en muy pocos días. Si hay que adecuar cuadro, tierra o derivación individual, el plazo depende de esos trabajos.</p>' },
+    ],
+    faqs: [
+      { q: '¿Necesito boletín para cambiar de compañía de luz?', a: 'No. Cambiar de comercializadora no requiere boletín. Sí puede pedirse en altas, reenganches o aumentos de potencia.' },
+    ],
+    servicio: 'boletin-electrico',
+  },
+  {
+    slug: 'como-aumentar-la-potencia-contratada',
+    title: 'Cómo aumentar la potencia contratada de la luz',
+    description: 'Cómo subir la potencia de la luz: cuándo basta con llamar a la comercializadora, cuándo necesitas boletín, qué cobra la distribuidora y qué potencia elegir.',
+    h1: 'Cómo aumentar la potencia contratada de la luz',
+    publicado: '2026-11-16',
+    actualizado: '2026-11-16',
+    respuesta: 'Si la potencia que quieres está dentro de la potencia máxima admisible de tu boletín, solo tienes que pedirla a tu comercializadora y pagar los derechos regulados por los kW de más. Si la supera, un instalador habilitado debe revisar y, si hace falta, adecuar la instalación (derivación individual, IGA, protecciones) y emitir un nuevo boletín antes de solicitarla.',
+    tldr: ['Mira la potencia máxima admisible de tu boletín.', 'Dentro del límite: solo trámite con la comercializadora.', 'Por encima: adecuación + nuevo boletín.', 'Puedes contratar potencia distinta en punta y valle.'],
+    secciones: [
+      { h2: 'Cómo saber si necesito boletín', html: '<p>Busca en tu último certificado la <strong>potencia máxima admisible</strong>. También puedes estimarla por el calibre del interruptor general (IGA): por ejemplo, un IGA de 25 A en monofásica admite unos 5,75 kW y uno de 40 A unos 9,2 kW. Si tienes dudas, mándanos foto del cuadro por WhatsApp.</p>' },
+    ],
+    faqs: [
+      { q: '¿Puedo bajar la potencia y volver a subirla?', a: 'Sí, pero cada subida conlleva derechos regulados y la distribuidora puede limitar cambios frecuentes. Calcula bien antes.' },
+    ],
+    servicio: 'aumento-de-potencia',
+  },
+  {
+    slug: 'acometida-lga-derivacion-individual-diferencias',
+    title: 'Acometida, CGP, LGA y derivación individual',
+    description: 'Diferencias entre acometida, caja general de protección (CGP), línea general de alimentación (LGA), contadores y derivación individual, con esquema.',
+    h1: 'Acometida, CGP, LGA y derivación individual: en qué se diferencian',
+    publicado: '2026-11-16',
+    actualizado: '2026-11-16',
+    respuesta: 'En orden desde la calle: la acometida (red de la distribuidora, ITC-BT-11) llega a la caja general de protección (CGP, ITC-BT-13); de ella sale la línea general de alimentación (LGA, ITC-BT-14), que alimenta la centralización de contadores (ITC-BT-16); de cada contador sale una derivación individual (ITC-BT-15) hasta el cuadro de cada vivienda o local (ITC-BT-17). Todo lo que hay desde la CGP es instalación de enlace del cliente.',
+    tldr: ['Acometida → CGP → LGA → contadores → derivación individual → cuadro.', 'La acometida es de la distribuidora.', 'Desde la CGP: instalación del edificio o del cliente.', 'En unifamiliares CGP y contador suelen ir juntos (CPM) y no hay LGA.'],
+    secciones: [
+      { h2: 'Esquema', html: '<div class="esquema" role="img" aria-label="Red de distribución, acometida, CGP, LGA, centralización de contadores, derivación individual y cuadro de vivienda"><span>Red</span><span>Acometida</span><span>CGP</span><span>LGA</span><span>Contadores</span><span>Derivación individual</span><span>Cuadro</span></div>' },
+      { h2: 'Tabla resumen', html: '<table><thead><tr><th>Elemento</th><th>ITC</th><th>Propiedad</th><th>Función</th></tr></thead><tbody><tr><td>Acometida</td><td>ITC-BT-11</td><td>Distribuidora</td><td>Une red y CGP</td></tr><tr><td>CGP</td><td>ITC-BT-13</td><td>Cliente / comunidad</td><td>Protege la LGA</td></tr><tr><td>LGA</td><td>ITC-BT-14</td><td>Comunidad</td><td>Une CGP y contadores</td></tr><tr><td>Centralización</td><td>ITC-BT-16</td><td>Comunidad</td><td>Aloja los contadores</td></tr><tr><td>Derivación individual</td><td>ITC-BT-15</td><td>Cada propietario</td><td>Une contador y cuadro</td></tr></tbody></table>' },
+    ],
+    faqs: [
+      { q: '¿Quién arregla la derivación individual?', a: 'Es del propietario de la vivienda o local, así que la repara o renueva un instalador contratado por él.' },
+    ],
+    servicio: 'instalaciones-de-enlace-lga',
+  },
+];
+
+// Glosario (DefinedTermSet): definiciones cortas y exactas = muy citables por IA.
+export const GLOSARIO = [
+  ['Acometida', 'Parte de la red de distribución que une la red de baja tensión con la caja general de protección del inmueble (ITC-BT-11).'],
+  ['CGP (Caja General de Protección)', 'Caja que aloja los fusibles de protección de la línea general de alimentación; marca el límite entre la red de la distribuidora y la instalación del cliente (ITC-BT-13).'],
+  ['CPM (Caja de Protección y Medida)', 'Caja que reúne CGP y contador en un solo conjunto; habitual en viviendas unifamiliares.'],
+  ['LGA (Línea General de Alimentación)', 'Línea que enlaza la CGP con la centralización de contadores de un edificio (ITC-BT-14).'],
+  ['Centralización de contadores', 'Conjunto de módulos donde se agrupan los contadores de un edificio (ITC-BT-16).'],
+  ['Derivación individual', 'Línea que une el contador de cada usuario con su cuadro general de mando y protección (ITC-BT-15).'],
+  ['IGA (Interruptor General Automático)', 'Interruptor de cabecera del cuadro que protege toda la instalación contra sobrecargas y cortocircuitos.'],
+  ['Diferencial', 'Dispositivo que corta la corriente cuando detecta una fuga a tierra; en viviendas se exige de 30 mA.'],
+  ['CIE (Certificado de Instalación Eléctrica)', 'Documento, conocido como boletín, con el que una empresa instaladora habilitada certifica que una instalación cumple el REBT.'],
+  ['MTD (Memoria Técnica de Diseño)', 'Documento que describe una instalación de baja tensión cuando no se requiere proyecto.'],
+  ['CUPS', 'Código Universal del Punto de Suministro: identificador único del punto de conexión a la red.'],
+  ['Distribuidora', 'Empresa propietaria de la red eléctrica de una zona, responsable de conectar suministros; en la mayor parte de Valencia es i-DE (Iberdrola Redes).'],
+  ['Comercializadora', 'Empresa que vende la energía y factura al cliente; no es dueña de la red.'],
+  ['Potencia máxima admisible', 'Potencia máxima que puede soportar una instalación según su certificado.'],
+  ['Extensión de red', 'Ampliación de la red de distribución necesaria para dar suministro a un punto donde la red no llega o no tiene capacidad.'],
+  ['Cesión de instalaciones', 'Transmisión a la distribuidora de las instalaciones de red construidas por el solicitante, que pasa a mantenerlas.'],
+  ['Solicitud de acceso y conexión', 'Trámite ante la distribuidora para obtener permiso para conectar un nuevo suministro o aumentar potencia (RD 1183/2020).'],
+  ['REBT', 'Reglamento Electrotécnico para Baja Tensión (RD 842/2002) y sus Instrucciones Técnicas Complementarias (ITC-BT).'],
+  ['ITC-BT-52', 'Instrucción técnica que regula las instalaciones para la recarga de vehículos eléctricos.'],
+  ['Empresa instaladora habilitada', 'Empresa que ha declarado su actividad ante la administración y puede ejecutar y certificar instalaciones eléctricas.'],
+];

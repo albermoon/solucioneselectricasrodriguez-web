@@ -55,7 +55,7 @@ export const LOGO_SVG = `<svg viewBox="0 0 48 48" aria-hidden="true" focusable="
 
 // ── Fotos responsive (WebP 800 / 1600 px) ───────────────────────────────────
 import { FOTOS } from './data/fotos.mjs';
-export const imgSrcset = (k) => `/img/${k}-800.webp 800w, /img/${k}-1600.webp 1600w`;
+export const imgSrcset = (k) => { const f = FOTOS[k]; return `/img/${k}-800.webp ${f.sw}w, /img/${k}-1600.webp ${f.w}w`; };
 export const img = (k, { sizes = '(max-width: 820px) 100vw, 50vw', cls = '', alt, eager = false } = {}) => {
   const f = FOTOS[k];
   if (!f) throw new Error(`Foto desconocida: ${k}`);

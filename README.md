@@ -24,7 +24,7 @@ Los botones, la barra fija del móvil, el botón flotante y el formulario abren 
 
 ## Fotos
 
-Las fotos de `public/img/` son de Unsplash: su licencia permite el uso comercial y no exige atribución. Están ahí para que la web no parezca una plantilla. **Conviene sustituirlas por fotos reales de vuestras obras**, porque es lo que más confianza da (E-E-A-T) y Google lo valora.
+Las fotos de `public/img/` vienen de Unsplash, cuya licencia no exige atribución, y de Wikimedia Commons. Las de Commons son fotos reales de redes en la Comunidad Valenciana y en España, y su licencia exige citar al autor: los créditos salen solos en `/aviso-legal/` a partir del campo `credito` de `src/data/fotos.mjs`. Están ahí para que la web no parezca una plantilla. **Conviene sustituirlas por fotos reales de vuestras obras**, porque es lo que más confianza da (E-E-A-T) y Google lo valora.
 
 1. Haz la foto en horizontal y guárdala con el mismo nombre en dos tamaños: `public/img/<clave>-800.webp` y `<clave>-1600.webp`. Las claves están en `src/data/fotos.mjs`: `hero`, `acometida`, `lineas`, `boletin`…
 2. Actualiza el `alt`, el ancho y el alto en `src/data/fotos.mjs`.
